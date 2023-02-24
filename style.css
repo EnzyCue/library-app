@@ -19,6 +19,7 @@ body {
     box-sizing: border-box;
     align-items: center;
     color: white;
+    position: relative;
 }
 
 h1 {
@@ -41,12 +42,13 @@ h1 {
     border-radius: 1rem;
     width: 90%;
     display: grid;
-    grid-template-rows: 8rem repeat(5, 16rem);
+    grid-template-rows: 8rem repeat(auto-fill, 16rem);
     grid-template-columns: repeat(auto-fill, minmax(40rem, 1fr));
     column-gap: 2rem;
     row-gap: 2rem;
     padding-left: 2rem;
     padding-right: 2rem;
+    padding-bottom: 2rem;
 }
 h2{
     grid-column: 1 / -1;
@@ -82,8 +84,7 @@ h2{
     padding-top: 2.5rem;
 }
 
-
-.newBook {
+.newBookButton {
     width: 250px;
     height: 75px;
     border-radius: 25px;
@@ -94,3 +95,84 @@ h2{
     font-weight: 900;
     cursor: pointer;
 }
+
+
+form {
+    box-sizing: border-box;
+    background-color: #0f172a;
+    border-radius: 1rem;
+    width: 50%;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr 3fr;
+    grid-template-columns: 1fr 4fr;
+    row-gap: 1rem;
+    column-gap:1px; 
+    padding-left: 2rem;
+    padding-right: 0;
+    padding-bottom: 2rem;
+    padding-top: 1rem;
+    border: 3px solid #22d3ee;
+    grid-auto-flow: row;
+    justify-items: center;
+    align-items: center;
+    max-width: 60rem;
+    backdrop-filter: blur(10px);
+}
+form > h3{
+    font-size: 30px;
+    grid-column: 1 / -1;
+}
+form > label{
+    grid-column: 1 / 2;
+}
+label{
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+}
+
+input {
+    background-color: #FFFFFF;
+    border: 1px solid #D6D9DC;
+    border-radius: 3px;
+    width: 90%;
+    padding: 7px;
+    font-size: 14px;
+    box-sizing: border-box;
+    outline-style: none;
+    box-shadow: none;
+    justify-self: start;
+    border: 2px solid #22d3ee;
+}
+input:focus {
+    border: 0.1rem solid #4997eb;
+    box-shadow: 0 9px 10px -10px #888;
+}
+input:invalid {
+    border: 0.1rem solid red;
+}
+input[type='text'] {
+    max-width: 40rem;
+}
+input[type='number'] {
+    max-width: 6rem;
+}
+
+input[type='checkbox'] {
+    width: 4rem;
+    height: 2rem;
+    border: 2px solid #22d3ee;
+}
+
+form > button{
+    width: 100px;
+    height: 60px;
+    border-radius: 10px;
+    background: #0f172a;
+    color: white;
+    border: 5px solid #22d3ee;
+    font-size: 20px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
