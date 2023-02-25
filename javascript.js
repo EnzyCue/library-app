@@ -5,62 +5,163 @@ function Book(title, author, numOfPages, isRead) {
     this.isRead = isRead;
 
     this.hasBeenRead = ()=> {
-        return (isRead) ? 'has been read.' : 'has not been read yet.';
+        return (this.isRead) ? 'has been read.' : 'has not been read yet.';
     }
     this.info = ()=> {
-        return(`${title} by ${author}, ${numOfPages} pages, ${this.hasBeenRead()}`);
+        return(`${this.title} by ${this.author}, ${this.numOfPages} pages, ${this.hasBeenRead()}`);
     }
 
 }
 
 const myLibrary = [];
 
+addInitialBooks();
+
 function addBookToLibrary(book){
+    index = myLibrary.length + 1;
+
+    const mainContent = document.querySelector('.mainContainer');
+
+    const card = document.createElement('div');
+    card.classList.add('card');
+    card.dataset.index = index;
+
+    const titleContainer = document.createElement('div');
+    titleContainer.classList.add('titleContainer');
+    card.appendChild(titleContainer);
+
+    addTitle(book, titleContainer, card);
+
+    addremoveCardButton(book, titleContainer,  card);
+
+    addAuthor(book, card);
+
+    addNumOfPages(book, card);
+
+    addIsRead(book, card);
+
+    mainContent.appendChild(card);
     myLibrary.push(book);
 }
 
-addBookToLibrary(new Book('Life of a Pi', 'Pi Baker', '3149', false));
-addBookToLibrary(new Book('Shronk', 'Simon Baldwick', '78', true));
-addBookToLibrary(new Book('How to write code good', 'The Good Coder', '289', false));
-addBookToLibrary(new Book('How to write code bad', 'Anonymous', '15', true));
-addBookToLibrary(new Book('Shronk 2', 'Simon Baldwick', '100', true));
-addBookToLibrary(new Book('Shronk 3: The Finale', 'Simon Baldwick', '80', true));
-addBookToLibrary(new Book('Shronk 4: A New World', 'Simon Baldwick', '60', false));
-
-console.log(myLibrary);
-
-function implementLibrary(library){
-    const mainContent = document.querySelector('.mainContainer');
-
-    for(let book of library) {
-        const card = document.createElement('div');
-        card.classList.add('card');
-
-        const title = document.createElement('p');
-        title.textContent =  book.title;
-        title.classList.add('title');
-        card.appendChild(title);
-
-        const author = document.createElement('p');
-        author.textContent = 'by ' + book.author;
-        author.classList.add('author');
-        card.appendChild(author);
-
-        const numOfPages = document.createElement('p');
-        numOfPages.textContent = 'Number of Pages: ' + book.numOfPages;
-        numOfPages.classList.add('numOfPages');
-        card.appendChild(numOfPages);
-
-        const isRead = document.createElement('p');
-        isRead.textContent = 'This book ' + book.hasBeenRead();
-        isRead.classList.add('isRead');
-        card.appendChild(isRead);
-
-        mainContent.appendChild(card);
-    }
+function addTitle(book, container, card){
+    const title = document.createElement('p');
+    title.textContent =  book.title;
+    title.classList.add('title');
+    container.appendChild(title);
 }
 
-const button = document.querySelector('button');
+function addremoveCardButton(book, container, card){
+    const button = document.createElement('button');
+    button.classList.add('removeCardButton');
+
+    const index = myLibrary.length + 1;
+
+    button.dataset.index = index;  
+    
+    const cancelSvg = document.createElement('img');
+    cancelSvg.setAttribute('src', 'close.svg');
+    cancelSvg.classList.add('cancelSvg');
+
+    button.appendChild(cancelSvg);
+    container.appendChild(button);
+
+    setupRemoveCardButtonEventListener(button);
+}
+
+function setupRemoveCardButtonEventListener(button){
+    button.addEventListener('click', () => {
+        let index = button.dataset.index;
+        console.log(index);
+
+        const mainContainer = document.querySelector('.mainContainer');
+        const cardToRemove = document.querySelector(`.card[data-index="${index}"]`);
+
+        mainContainer.removeChild(cardToRemove);
+    })
+}
+
+function addIsRead(book, card){
+    const button = document.createElement('button');
+    button.classList.add('readButton');
+    const index = myLibrary.length + 1;
+
+    button.dataset.index = index;
+
+    button.textContent = 'This book ' + book.hasBeenRead();
+    button.classList.add('isRead');
+    card.appendChild(button);
+    setupReadButton(button);
+}
+
+function addNumOfPages(book, card) {
+    const numOfPages = document.createElement('p');
+    numOfPages.textContent = 'Number of Pages: ' + book.numOfPages;
+    numOfPages.classList.add('numOfPages');
+    card.appendChild(numOfPages);
+}
+
+function addAuthor(book, card) {
+    const author = document.createElement('p');
+    author.textContent = 'by ' + book.author;
+    author.classList.add('author');
+    card.appendChild(author);
+}
+
+function addInitialBooks(){
+    addBookToLibrary(new Book('Life of a Pie', 'Gordon Ramsay', '3149', true));
+    addBookToLibrary(new Book('Shronk', 'Simon Baldwick', '78', true));
+    addBookToLibrary(new Book('How to write code good', 'The Good Coder', '289', true));
+    addBookToLibrary(new Book('How to get a job', 'Anonymous', '15', false));
+}
 
 
-implementLibrary(myLibrary);
+const superContainer = document.querySelector('.superContainer');
+const form = document.querySelector('form');
+const cancelButton = document.querySelector('.cancelButton');
+const submitButton = document.querySelector('.submitButton');
+
+
+
+const newBookButton = document.querySelector('.newBookButton');
+newBookButton.addEventListener('click', () => {
+    form.style.visibility = 'visible';
+    superContainer.style.filter = 'blur(5px)';
+})
+
+cancelButton.addEventListener('click', () => {
+    form.style.visibility = 'hidden';
+    superContainer.style.filter = 'none';
+})
+
+const title = document.querySelector('#title');
+const author = document.querySelector('#author');
+const numOfPages = document.querySelector('#numOfPages');
+const isRead = document.querySelector('#isRead');
+
+
+submitButton.addEventListener('click', () => {
+
+    addBookToLibrary(new Book(title.value, author.value, numOfPages.value, isRead.checked));
+    form.reset();
+    form.style.visibility = 'hidden';
+    superContainer.style.filter = 'none';
+
+})
+
+
+function setupReadButton(button) {
+    button.addEventListener('click', () => {
+        let myIndex = button.dataset.index - 1;
+        let isRead = myLibrary[myIndex].isRead;
+        if (isRead == true) {
+            myLibrary[myIndex].isRead = false;
+            console.log('changing to false');
+        } else if (isRead == false){
+            myLibrary[myIndex].isRead = true;
+            console.log('changing to true');
+        }
+        console.log(myLibrary[myIndex].hasBeenRead());
+        button.textContent = 'This book ' + myLibrary[myIndex].hasBeenRead();
+    })
+}
