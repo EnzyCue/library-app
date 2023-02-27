@@ -1,13 +1,40 @@
-function Book(title, author, numOfPages, isRead) {
-    this.title = title;
-    this.author = author;
-    this.numOfPages = numOfPages;
-    this.isRead = isRead;
+// function Book(title, author, numOfPages, isRead) {
+//     this.title = title;
+//     this.author = author;
+//     this.numOfPages = numOfPages;
+//     this.isRead = isRead;
 
-    this.hasBeenRead = ()=> {
+//     this.hasBeenRead = ()=> {
+//         return (this.isRead) ? 'has been read.' : 'has not been read yet.';
+//     }
+//     this.info = ()=> {
+//         return(`${this.title} by ${this.author}, ${this.numOfPages} pages, ${this.hasBeenRead}`);
+//     }
+
+// }
+
+class Book {
+    constructor(title, author, numOfPages, isRead){
+        this.title = title;
+        this.author = author;
+        this.numOfPages = numOfPages;
+        this.isRead = isRead;
+    }
+
+
+    hasBeenRead() {
         return (this.isRead) ? 'has been read.' : 'has not been read yet.';
     }
-    this.info = ()=> {
+
+    get read() {
+        return this.isRead;
+    }
+
+    set read(set) {
+        this.isRead = set;
+    }
+
+    info = ()=> {
         return(`${this.title} by ${this.author}, ${this.numOfPages} pages, ${this.hasBeenRead()}`);
     }
 
@@ -72,7 +99,7 @@ function addremoveCardButton(book, container, card){
 function setupRemoveCardButtonEventListener(button){
     button.addEventListener('click', () => {
         let index = button.dataset.index;
-        console.log(index);
+        console.log(index + ' removed');
 
         const mainContainer = document.querySelector('.mainContainer');
         const cardToRemove = document.querySelector(`.card[data-index="${index}"]`);
@@ -153,15 +180,14 @@ submitButton.addEventListener('click', () => {
 function setupReadButton(button) {
     button.addEventListener('click', () => {
         let myIndex = button.dataset.index - 1;
-        let isRead = myLibrary[myIndex].isRead;
+        let isRead = myLibrary[myIndex].read;
         if (isRead == true) {
             myLibrary[myIndex].isRead = false;
-            console.log('changing to false');
+            console.log('changing read to false');
         } else if (isRead == false){
             myLibrary[myIndex].isRead = true;
-            console.log('changing to true');
+            console.log('changing read to true');
         }
-        console.log(myLibrary[myIndex].hasBeenRead());
         button.textContent = 'This book ' + myLibrary[myIndex].hasBeenRead();
     })
 }
