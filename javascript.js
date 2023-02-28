@@ -1,18 +1,3 @@
-// function Book(title, author, numOfPages, isRead) {
-//     this.title = title;
-//     this.author = author;
-//     this.numOfPages = numOfPages;
-//     this.isRead = isRead;
-
-//     this.hasBeenRead = ()=> {
-//         return (this.isRead) ? 'has been read.' : 'has not been read yet.';
-//     }
-//     this.info = ()=> {
-//         return(`${this.title} by ${this.author}, ${this.numOfPages} pages, ${this.hasBeenRead}`);
-//     }
-
-// }
-
 class Book {
     constructor(title, author, numOfPages, isRead){
         this.title = title;
